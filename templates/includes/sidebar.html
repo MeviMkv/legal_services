@@ -1,0 +1,140 @@
+{% load active_link_tags %}
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-inner slimscroll">
+        <div id="sidebar-menu" class="sidebar-menu">
+            {% if user.user_type == '1' %}
+                <ul>
+                    <li class="menu-title">
+                        <span>Main Menu</span>
+                    </li>
+                    <li class="">
+                        <a href="{% url 'admin_view_case' %}"><i class="fas fa-users"></i> <span>Cases</span></a>
+                    </li>
+
+                    <li class="">
+                        <a href="{% url 'admin_view_ppcase' %}"><i class="fas fa-users"></i> <span>Public Prosecutor Cases</span></a>
+                    </li>
+
+                    <li class="submenu {% active_link 'view_advocate' 'active' %} {% active_link 'add_advocate' 'active' %}">
+                        <a href="#"><i class="fas fa-address-book"></i> <span> Advocate</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{% url 'view_advocate' %}">View</a></li>
+                            <li><a href="{% url 'add_advocate' %}">Add</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="submenu {% active_link 'add_advisor' 'active' %} {% active_link 'view_advisor' 'active' %}">
+                        <a href="#"><i class="fas fa-address-card"></i> <span> Advisors</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{% url 'add_advisor' %}">Add</a></li>
+                            <li><a href="{% url 'view_advisor' %}">View</a></li>
+                        </ul>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'admin_case_status' %}"><i class="fas fa-clock"></i>
+                            <span>Case Status</span></a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'admin_view_payments' %}"><i class="fas fa-dollar-sign"></i> <span>Payment Status</span></a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'doLogout' %}"><i class="fas fa-sign-out-alt"></i> <span>LogOut</span></a>
+                    </li>
+                </ul>
+            {% elif user.user_type == '2' %}
+                <ul>
+                    <li class="menu-title">
+                        <span>Main Menu</span>
+                    </li>
+                    <li>
+                        <a href="{% url 'add_notification' %}"><i class="fas fa-bell"></i> <span>Notification</span></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'advocate_view_case' %}"><i class="fas fa-users"></i> <span>Case Requests</span></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'advocate_case_status' %}"><i class="fas fa-clock"></i> <span>Case Status</span></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'advocate_view_report' %}"><i class="fas fa-clock"></i>
+                            <span>View Reports</span></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'advocate_view_payments' %}"><i class="fas fa-dollar-sign"></i> <span>Payment Status</span></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'doLogout' %}"><i class="fas fa-sign-out-alt"></i> <span>LogOut</span></a>
+                    </li>
+                </ul>
+
+            {% elif user.user_type == '3' %}
+                <ul>
+                    <li class="menu-title">
+                        <span>Main Menu</span>
+                    </li>
+                    <li class="{% active_link 'view_notification' 'active' %}">
+                        <a href="{% url 'view_notification' %}"><i class="fas fa-bell"></i>
+                            <span>Notifications</span></a>
+                    </li>
+
+                    <li class="submenu {% active_link 'view_case' 'active' %} {% active_link 'add_case' 'active' %}">
+                        <a href="#"><i class="fas fa-book"></i> <span> Case</span> <span
+                                class="menu-arrow"></span></a>
+                        <ul>
+                            <li><a href="{% url 'case_status' %}">View</a></li>
+                            <li><a href="{% url 'user_view_advocate' %}">Add</a></li>
+                        </ul>
+                    </li>
+
+                    <li class="{% active_link 'user_view_public' 'active' %}">
+                        <a href="{% url 'user_view_public' %}"><i class="fas fa-book-open"></i>
+                            <span>Public Prosecutor</span></a>
+                    </li>
+
+                    <li class="{% active_link 'users_view_payments' 'active' %}">
+                        <a href="{% url 'users_view_payments' %}"><i class="fas fa-dollar-sign"></i>
+                            <span>Payments</span></a>
+                    </li>
+
+                    <li class="{% active_link 'view_report' 'active' %}">
+                        <a href="{% url 'view_report' %}"><i class="fas fa-envelope-open-text"></i> <span>Reports</span></a>
+                    </li>
+
+                    <li class="{% active_link 'view_suggestion' 'active' %}">
+                        <a href="{% url 'view_suggestion' %}"><i class="fas fa-comments"></i>
+                            <span>Suggestions</span></a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'doLogout' %}"><i class="fas fa-sign-out-alt"></i> <span>LogOut</span></a>
+                    </li>
+                </ul>
+            {% else %}
+                <ul>
+                    <li class="menu-title">
+                        <span>Main Menu</span>
+                    </li>
+                    <li class="{% active_link 'view_notification' 'active' %}">
+                        <a href="{% url 'view_notification' %}"><i class="fas fa-bell"></i>
+                            <span>Notifications</span></a>
+                    </li>
+
+                    <li class="{% active_link 'advisor_view_suggestion' 'active' %}">
+                        <a href="{% url 'advisor_view_suggestion' %}"><i class="fas fa-comments"></i>
+                            <span>Suggestion Requests</span></a>
+                    </li>
+
+                    <li>
+                        <a href="{% url 'doLogout' %}"><i class="fas fa-sign-out-alt"></i> <span>LogOut</span></a>
+                    </li>
+                </ul>
+
+            {% endif %}
+        </div>
+    </div>
+</div>

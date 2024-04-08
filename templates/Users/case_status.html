@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Case List</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Case</li>
+                    </ul>
+                </div>
+                <div class="col-auto text-right float-right ml-auto">
+                    <a href="{% url 'add_case' %}" class="btn btn-primary"><i class="fas fa-plus"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                {% include 'includes/messages.html' %}
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="table_id" class="table table-hover table-center mb-0">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Advocate</th>
+                                    <th>Content</th>
+                                    <th>Created at</th>
+                                    <th>Status</th>
+                                    {% if i.status == 'Case Closed, Payment Completed' %}
+                                        <th>Fees Paid</th>
+                                    {% endif %}
+                                    {% if i.status == 'Case Closed, Requesting Fees' %}
+                                        <th>Make Payment</th>
+                                    {% endif %}
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for i in case %}
+
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ i.advocate_id.admin.first_name }}</td>
+                                        <td>{{ i.content }}</td>
+                                        <td>{{ i.created_at }}</td>
+                                        {% if i.status == 'Approved' %}
+                                            <td><span class="badge badge-info">{{ i.status }}</span></td>
+                                        {% elif i.status == 'Removed' %}
+                                            <td><span class="badge badge-danger">{{ i.status }}</span></td>
+                                        {% else %}
+                                            <td><span class="badge badge-warning">{{ i.status }}</span></td>
+                                        {% endif %}
+                                        {% if i.status == 'Case Closed, Payment Completed' %}
+                                            <td>Rs. {{ i.cost }}</td>
+                                        {% endif %}
+                                        {% if i.status == 'Case Closed, Requesting Fees' %}
+                                            <td class="text-right">
+                                                <div class="actions">
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary mr-2"
+                                                            data-toggle="modal"
+                                                            data-target="#fee-{{ forloop.counter }}">Pay Fees
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        {% endif %}
+                                    </tr>
+
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% for i in case %}
+        <div class="modal fade" id="fee-{{ forloop.counter }}">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Case Details</h5>
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                        </button>
+                    </div>
+                    <form method="post" action="{% url 'add_payment' %}">
+                        {% csrf_token %}
+                        <div class="modal-body align-items-lg-center">
+                            <div class="row g-2">
+                                <div class="col mb-0">
+                                    <label for="dobWithTitle" class="form-label">Content</label>
+                                    <input type="text" name="case_id" value="{{ i.id }}" hidden>
+                                    <textarea class="form-control" id="dobWithTitle" name="content" required></textarea>
+                                </div>
+                            </div>
+                            <div class="row g-2">
+                                <div class="col mb-0">
+                                    <label for="dobWithTitle" class="form-label">Card Number</label>
+                                    <input
+                                            type="tel"
+                                            id="dobWithTitle"
+                                            class="form-control"
+                                            pattern="[1-9]{4}-[0-9]{4}-[0-9]{4}-[0-9]{4}"
+                                            title="Please follow the pattern 1111-1111-1111-1111"
+                                            placeholder="Enter card number"
+                                    />
+                                </div>
+                                <div class="col mb-0">
+                                    <label for="emailWithTitle" class="form-label">CVV</label>
+                                    <input
+                                            type="tel"
+                                            id="dobWithTitle"
+                                            class="form-control"
+                                            pattern="[0-9]{3}"
+                                            title="Please follow the pattern 111"
+                                            placeholder="Enter card CVV"
+                                    />
+                                </div>
+                            </div>
+                            <br>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+{% endblock %}

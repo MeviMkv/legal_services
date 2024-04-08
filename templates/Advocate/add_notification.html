@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="content container-fluid">
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="card ">
+                    <div class="card-body ">
+                        <form method="post" action="{% url 'add_notification' %}" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="col-12">
+                                <h5 class="form-title"><span>General Notification</span></h5>
+                            </div>
+
+                            {% include 'includes/messages.html' %}
+
+                            <div class="col-sm-11">
+                                <div class="form-group">
+                                    <label>Content</label>
+                                    <textarea class="form-control" name="content" required></textarea>
+                                </div>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit" class="btn btn-success">Add Message</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br>
+        <div class="row">
+            <div class="col-sm-12">
+                {% include 'includes/messages.html' %}
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="table_id" class="table table-hover table-center mb-0">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Date</th>
+                                    <th>Content</th>
+                                    <th class="text-right">Action</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for i in noti %}
+
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ i.created_at }}</td>
+                                        <td>{{ i.content }}</td>
+                                        <td class="text-right">
+                                            <div class="actions">
+                                                <a href="{% url 'delete_notification' i.id %}"
+                                                   class="btn btn-sm bg-danger-light">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

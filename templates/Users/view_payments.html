@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Payment Details</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Cases</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                {% include 'includes/messages.html' %}
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="table_id" class="table table-hover table-center mb-0">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Content</th>
+                                    <th>Client</th>
+                                    <th>Contact No</th>
+                                    <th>Created at</th>
+                                    {% for i in case %}
+                                        {% if i.status == 'Case Closed' %}
+                                        {% else %}
+                                            <th>Fees</th>
+                                        {% endif %}
+                                    {% endfor %}
+                                    <th class="text-right">Status</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for i in case %}
+
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ i.content }}</td>
+                                        <td>{{ i.user_id.admin.first_name }}</td>
+                                        <td>{{ i.user_id.phone }}</td>
+                                        <td>{{ i.created_at }}</td>
+                                        {% if i.status == 'Case Closed' %}
+                                        {% else %}
+                                            <td>Rs. {{ i.cost }}</td>
+                                        {% endif %}
+                                        {% if i.status == 'Case Closed' %}
+                                            <td class="text-right"><span
+                                                    class="badge badge-success">{{ i.status }}</span></td>
+                                        {% endif %}
+                                        {% if i.status == 'Case Closed, Requesting Fees' or i.status == 'Case Closed, Payment Completed' %}
+                                            <td class="text-right"><span
+                                                    class="badge badge-success">{{ i.status }}</span></td>
+                                        {% endif %}
+
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

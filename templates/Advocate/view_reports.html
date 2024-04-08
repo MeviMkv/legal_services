@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="content container-fluid">
+        <div class="page-header">
+            <div class="row align-items-center">
+                <div class="col">
+                    <h3 class="page-title">Case Reports</h3>
+                    <ul class="breadcrumb">
+                        <li class="breadcrumb-item"><a href="">Dashboard</a></li>
+                        <li class="breadcrumb-item active">Case</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                {% include 'includes/messages.html' %}
+                <div class="card card-table">
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table id="table_id" class="table table-hover table-center mb-0">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Content</th>
+                                    <th>Client</th>
+                                    <th>Contact No</th>
+                                    <th>File</th>
+                                    <th>Created at</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for i in reports %}
+
+                                    <tr>
+                                        <td>{{ forloop.counter }}</td>
+                                        <td>{{ i.case_id.user_id.admin.first_name }}</td>
+                                        <td>{{ i.case_id.user_id.phone }}</td>
+                                        <td>{{ i.case_id.content }}</td>
+                                        <td><a href="/{{ i.file }}" title="Click to download">{{ i.file }}</a></td>
+                                        <td>{{ i.created_at }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    {% for i in case %}
+        <div class="modal fade" id="viewticket-{{ forloop.counter }}">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Add Case Reports</h5>
+                        <button type="button" class="close" data-dismiss="modal"><span>&times;</span>
+                        </button>
+                    </div>
+                    <form method="post" action="{% url 'add_report' %}" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="modal-body align-items-lg-center">
+                            <div class="row g-2">
+                                <input type="text" name="case_id" value="{{ i.id }}" hidden>
+                                <div class="col mb-0">
+                                    <label for="dobWithTitle" class="form-label">Comments</label>
+                                    <textarea class="form-control" id="dobWithTitle" name="comments" required></textarea>
+                                </div>
+                                <div class="col mb-0">
+                                    <label for="dobWithTitle" class="form-label">File</label>
+                                    <input type="file" name="file" class="form-control">
+                                </div>
+                            </div>
+                            <br>
+                            <div class="modal-footer">
+                                <button type="submit" class="btn btn-success">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+
+
+{% endblock %}
